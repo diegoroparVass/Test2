@@ -1,2 +1,2 @@
 # Test2
-Test2 Tablet Socket
+Test Andorid Web Sockets Connection
