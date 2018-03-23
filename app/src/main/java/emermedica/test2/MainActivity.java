@@ -1,6 +1,7 @@
 package emermedica.test2;
 
 import android.app.Activity;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -11,18 +12,23 @@ import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.net.Uri;
 
 import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.drafts.Draft_10;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.handshake.ServerHandshake;
 
 import java.net.InetAddress;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import emermedica.test2.socket.WebsocketClientEndpoint;
 
 public class MainActivity extends Activity implements OnClickListener {
 
@@ -36,6 +42,9 @@ public class MainActivity extends Activity implements OnClickListener {
 
     private static final String TAG = "MainActivity";
     private static final int SERVER_PORT = 12345;
+
+    private WebSocketClient mWebSocketClient;
+    String destUri = "";
 
     public MainActivity() {
         ListElementsArrayList = null;
@@ -56,12 +65,11 @@ public class MainActivity extends Activity implements OnClickListener {
 
                         final View vF = v;
 
-
                         InetAddress vAdd = MyApplication.getInetAddress();
                         String strAdd = vAdd.getHostAddress().toString();
                         messageNotify("IPAddresInfo - " + strAdd,vF,null);
 
-                        String destUri = "ws://"+strAdd+":"+SERVER_PORT;
+                        destUri = "ws://"+strAdd+":"+SERVER_PORT+"/";
                         messageNotify("destUri-->" + destUri,vF,null);
 
                         URI ur = URI.create(destUri);
@@ -88,7 +96,17 @@ public class MainActivity extends Activity implements OnClickListener {
                             }
                         };
 
-                       cliente.send("Hola mundo!");
+                       //cliente.send("Hola mundo!");
+
+                        WebSocketClient client = null;
+                        try {
+                            client = new WebsocketClientEndpoint(new URI(destUri), new Draft_10());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            messageNotify("error",v,e);
+                        }
+                        client.connect();
+
                     }
                     catch (Exception ex) {
 
@@ -224,4 +242,46 @@ public class MainActivity extends Activity implements OnClickListener {
         messageNotify("Click2",v,null);
 
     }
+
+    private void connectWebSocket() {
+        URI uri;
+        try {
+            uri = new URI(destUri);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        mWebSocketClient = new WebSocketClient(uri) {
+            @Override
+            public void onOpen(ServerHandshake serverHandshake) {
+                Log.i("Websocket", "Opened");
+                mWebSocketClient.send("Hello from " + Build.MANUFACTURER + " " + Build.MODEL);
+            }
+
+            @Override
+            public void onMessage(String s) {
+                final String message = s;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        TextView textView = (TextView)findViewById(R.id.messages);
+                        textView.setText(textView.getText() + "\n" + message);
+                    }
+                });
+            }
+
+            @Override
+            public void onClose(int i, String s, boolean b) {
+                Log.i("Websocket", "Closed " + s);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Log.i("Websocket", "Error " + e.getMessage());
+            }
+        };
+        mWebSocketClient.connect();
+    }
+
 }

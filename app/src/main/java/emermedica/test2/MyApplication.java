@@ -41,7 +41,7 @@ public class MyApplication extends Application {
         Log.e(TAG, "IP Server-->"+inetAddress.getHostAddress());
 
         mServer = new MySocketServer(new InetSocketAddress(inetAddress.getHostAddress(), SERVER_PORT));
-        Log.e(TAG, "MySocketServer-->"+mServer.getAddress().getAddress()+":"+mServer.getAddress().getPort());
+        Log.e(TAG, "MySocketServer-->"+mServer.getAddress());
         mServer.start();
         Log.e(TAG, "MySocketServer,Server Started-->"+inetAddress.getHostAddress());
         //mServer.sendMessage("Server Start Listen!");
