@@ -1,6 +1,10 @@
 package emermedica.test2;
 
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -30,8 +34,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import emermedica.test2.socket.WebsocketClientEndpoint;
+import emermedica.test2.utils.UtilsTab;
 
-public class MainActivity extends Activity implements OnClickListener {
+public class MainActivity extends Activity {
 
     private ListView lv;
     String[] ListElements = new String[] {
@@ -65,7 +70,7 @@ public class MainActivity extends Activity implements OnClickListener {
         userName.setText("DiegoR");
         userPwd.setText("1234@");
 
-        InetAddress vAdd = MyApplication.getInetAddress();
+        InetAddress vAdd = UtilsTab.getLocalAddress();
         String strAdd = vAdd.getHostAddress().toString();
 
         serverIp.setText(strAdd);
@@ -77,81 +82,34 @@ public class MainActivity extends Activity implements OnClickListener {
         try {
 
             Button button = (Button) findViewById(R.id.button1);
-            //button.setOnClickListener(this);
             button.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     //onClick(v);
-                    messageNotify("Click1",v,null);
-                    try {
-
-                        final View vF = v;
-                        URI ur = URI.create(destUri);
-                        WebSocketClient cliente = new WebSocketClient(ur) {
-                            @Override
-                            public void onOpen(ServerHandshake handshakedata) {
-                                messageNotify("Socket Open!",vF,null);
-                            }
-
-                            @Override
-                            public void onMessage(String message) {
-                                messageNotify(message,vF,null);
-                            }
-
-                            @Override
-                            public void onClose(int code, String reason, boolean remote) {
-                                messageNotify("Socket Closed!",vF,null);
-                            }
-
-                            @Override
-                            public void onError(Exception ex) {
-                                messageNotify(ex.getMessage(),vF,ex);
-                            }
-                        };
-                       //cliente.send("Hola mundo!");
-                        WebSocketClient client = null;
-                        try {
-                            client = new WebsocketClientEndpoint(new URI(destUri), new Draft_10());
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            messageNotify("error",v,e);
-                        }
-                        client.connect();
-                    }
-                    catch (Exception ex) {
-
-                        messageNotify("Error click 1",v,ex);
-                    }
-
+                    bnt1Event(v);
                 }
             });
 
             Button button2 = (Button) findViewById(R.id.button2);
             button2.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-
-                    try
-                    {
-                        final View vF = v;
-
-                        TextView textView = (TextView)findViewById(R.id.messagesServer);
-                        textView.setText("");
-
-                        TextView textView2 = (TextView)findViewById(R.id.messages);
-                        textView2.setText("");
-
-                        messageNotify("Click2", v, null);
-                        connectWebSocket();
-                    }
-                    catch (Exception e)
-                    {
-                        messageNotify("Error CLick 2",v,e);
-                    }
-
+                    btn2Event(v);
                 }
             });
-
-
             connectWebSocket();
+
+            Button button3 = (Button) findViewById(R.id.btn3);
+            button3.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    btn3Event(v,"MainActivity2");
+                }
+                });
+
+            Button button4 = (Button) findViewById(R.id.btn4);
+            button4.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    btn3Event(v,"MainActivity3");
+                }
+            });
 
             //lv = (ListView) findViewById(R.id.listView1);
             //ListElementsArrayList = new ArrayList<String>
@@ -238,53 +196,6 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
-    public void onClick(View v){
-        messageNotify("Click1",v,null);
-        try {
-
-            final View vF = v;
-        String destUri = "ws://echo.websocket.org";
-        URI ur = URI.create(destUri);
-
-        WebSocketClient cliente = new WebSocketClient(ur) {
-            @Override
-            public void onOpen(ServerHandshake handshakedata) {
-                messageNotify("Socket Open!",vF,null);
-            }
-
-            @Override
-            public void onMessage(String message) {
-                messageNotify(message,vF,null);
-            }
-
-            @Override
-            public void onClose(int code, String reason, boolean remote) {
-                messageNotify("Socket Closed!",vF,null);
-            }
-
-            @Override
-            public void onError(Exception ex) {
-                messageNotify(ex.getMessage(),vF,null);
-            }
-        };
-
-            cliente.send("Hola mundo!");
-
-        }
-        catch (Exception ex) {
-            messageNotify(ex.getMessage(),v,ex);
-        }
-
-
-
-    }
-
-    public void onClick2(View v)
-    {
-        messageNotify("Click2",v,null);
-
-    }
-
     private void connectWebSocket() {
         URI uri;
         concatUriCustomServer();
@@ -296,7 +207,7 @@ public class MainActivity extends Activity implements OnClickListener {
             return;
         }
 
-        InetAddress vAdd = MyApplication.getInetAddress();
+        InetAddress vAdd = UtilsTab.getLocalAddress();
         final String strAdd = vAdd.getHostAddress().toString();
 
         mWebSocketClient = new WebSocketClient(uri) {
@@ -352,5 +263,130 @@ public class MainActivity extends Activity implements OnClickListener {
         TextView serverPort = (TextView)findViewById(R.id.serverPortText);
         destUri = "ws://"+serverIp.getText()+":"+serverPort.getText()+"/";
         messageNotify("destUri-->" + destUri,null,null);
+    }
+
+    private void bnt1Event(View v)
+    {
+        messageNotify("Click1",v,null);
+        try {
+
+            final View vF = v;
+            URI ur = URI.create(destUri);
+            WebSocketClient cliente = new WebSocketClient(ur) {
+                @Override
+                public void onOpen(ServerHandshake handshakedata) {
+                    messageNotify("Socket Open!",vF,null);
+                }
+
+                @Override
+                public void onMessage(String message) {
+                    messageNotify(message,vF,null);
+                }
+
+                @Override
+                public void onClose(int code, String reason, boolean remote) {
+                    messageNotify("Socket Closed!",vF,null);
+                }
+
+                @Override
+                public void onError(Exception ex) {
+                    messageNotify(ex.getMessage(),vF,ex);
+                }
+            };
+            //cliente.send("Hola mundo!");
+            WebSocketClient client = null;
+            try {
+                client = new WebsocketClientEndpoint(new URI(destUri), new Draft_10());
+            } catch (Exception e) {
+                e.printStackTrace();
+                messageNotify("error",v,e);
+            }
+            client.connect();
+        }
+        catch (Exception ex) {
+
+            messageNotify("Error click 1",v,ex);
+        }
+    }
+
+    private void btn2Event(View v)
+    {
+        messageNotify("Click2",v,null);
+        try
+        {
+            final View vF = v;
+
+            TextView textView = (TextView)findViewById(R.id.messagesServer);
+            textView.setText("");
+
+            TextView textView2 = (TextView)findViewById(R.id.messages);
+            textView2.setText("");
+
+            connectWebSocket();
+        }
+        catch (Exception e)
+        {
+            messageNotify("Error CLick 2",v,e);
+        }
+    }
+
+    private void btn3Event(View v,String activityName) {
+
+        messageNotify("Click3_"+activityName, v, null);
+        try {
+
+            PackageManager pacList = getPackageManager();
+
+            String packName = "emermedica.test2";
+
+            //Intent intent = getPackageManager().getLaunchIntentForPackage(packName);
+            Intent intent2 = getPackageManager().getLaunchIntentForPackage(packName+"."+activityName);
+            Intent intent = new Intent(Intent.ACTION_MAIN, null);
+
+            //Intent intent = new Intent(Intent.ACTION_MAIN);
+            //startActivity(intent);
+            TextView userName = (TextView)findViewById(R.id.userText);
+            TextView userPwd = (TextView)findViewById(R.id.passwordText);
+
+            if (intent != null) {
+                //intent.setComponent(new ComponentName(packName,packName+".MainActivity2"));
+                // We found the activity now start the activity
+                //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                intent.addCategory(Intent.CATEGORY_LAUNCHER);
+                final ComponentName cn = new ComponentName(packName, packName+"."+activityName);
+                intent.setComponent(cn);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                intent.putExtra("userName",userName.getText());
+                intent.putExtra("userPassword",userPwd.getText());
+
+                startActivity(intent);
+            } else {
+                // Bring user to the market or let them choose an app?
+                intent = new Intent(Intent.ACTION_VIEW);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setData(Uri.parse("market://details?id=" + packName));
+                startActivity(intent);
+            }
+
+        } catch (Exception e) {
+            messageNotify("Error CLick 3", v, e);
+        }
+    }
+
+    public void startNewActivity(Context context, String packageName) {
+        Intent intent = context.getPackageManager().getLaunchIntentForPackage(packageName);
+        if (intent != null) {
+            // We found the activity now start the activity
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        } else {
+            // Bring user to the market or let them choose an app?
+            intent = new Intent(Intent.ACTION_VIEW);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setData(Uri.parse("market://details?id=" + packageName));
+            context.startActivity(intent);
+        }
     }
 }
