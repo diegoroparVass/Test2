@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import emermedica.test2.service.TestReceiver;
 import emermedica.test2.socket.WebsocketClientEndpoint;
 import emermedica.test2.utils.UtilsTab;
 
@@ -52,6 +54,12 @@ public class MainActivity extends Activity {
     private WebSocketClient mWebSocketClient;
     String destUri = "";
 
+    private String strpackageNameref ="";
+    private String strActivityNameref ="";
+
+    private TextView packagenameRef;
+    private TextView activityNameRef;
+
     public MainActivity() {
         ListElementsArrayList = null;
     }
@@ -60,6 +68,22 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        PackageInfo pinfo = null;
+        try {
+            pinfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+
+            String strInfo = "<packageName>"+pinfo.packageName+"</packageName>";
+            strInfo+= "<processName>"+pinfo.applicationInfo.processName+"</processName>";
+
+            TextView txtAppInfos = (TextView)findViewById(R.id.txtInfoApp);
+            txtAppInfos.setText(strInfo);
+            messageNotify(strInfo,null,null);
+
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
 
         TextView serverIp = (TextView)findViewById(R.id.serverIpTxt);
         TextView serverPort = (TextView)findViewById(R.id.serverPortText);
@@ -72,6 +96,18 @@ public class MainActivity extends Activity {
 
         InetAddress vAdd = UtilsTab.getLocalAddress();
         String strAdd = vAdd.getHostAddress().toString();
+
+        packagenameRef = (TextView)findViewById(R.id.txtPackageRef);
+        if(packagenameRef!=null) {
+            packagenameRef.setText("emermedica.test2");
+            strpackageNameref = packagenameRef.getText().toString();
+        }
+
+        activityNameRef = (TextView)findViewById(R.id.txtActName);
+        if(activityNameRef!=null) {
+            activityNameRef.setText("MainActivity3");
+            strActivityNameref = activityNameRef.getText().toString();
+        }
 
         serverIp.setText(strAdd);
         serverPort.setText("12345");
@@ -110,6 +146,8 @@ public class MainActivity extends Activity {
                     btn3Event(v,"MainActivity3");
                 }
             });
+
+            sendBroadcast(new Intent(this, TestReceiver.class));
 
             //lv = (ListView) findViewById(R.id.listView1);
             //ListElementsArrayList = new ArrayList<String>
@@ -332,19 +370,33 @@ public class MainActivity extends Activity {
 
     private void btn3Event(View v,String activityName) {
 
+        strpackageNameref = packagenameRef.getText().toString();
+        strActivityNameref = activityNameRef.getText().toString();
+
+        messageNotify("Click3_"+activityName+"_activnameRef="+strpackageNameref, v, null);
+
         messageNotify("Click3_"+activityName, v, null);
+
         try {
 
             PackageManager pacList = getPackageManager();
 
             String packName = "emermedica.test2";
+            if(!TextUtils.isEmpty(strpackageNameref))
+            {
+                packName=strpackageNameref;
+            }
+
+            if(!TextUtils.isEmpty(strActivityNameref))
+            {
+                activityName=strActivityNameref;
+            }
 
             //Intent intent = getPackageManager().getLaunchIntentForPackage(packName);
-            Intent intent2 = getPackageManager().getLaunchIntentForPackage(packName+"."+activityName);
+            //Intent intent2 = getPackageManager().getLaunchIntentForPackage(packName+"."+activityName);
             Intent intent = new Intent(Intent.ACTION_MAIN, null);
 
             //Intent intent = new Intent(Intent.ACTION_MAIN);
-            //startActivity(intent);
             TextView userName = (TextView)findViewById(R.id.userText);
             TextView userPwd = (TextView)findViewById(R.id.passwordText);
 
@@ -354,6 +406,7 @@ public class MainActivity extends Activity {
                 //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
                 intent.addCategory(Intent.CATEGORY_LAUNCHER);
+                //final ComponentName cn = new ComponentName(packName, packName+"."+activityName);
                 final ComponentName cn = new ComponentName(packName, packName+"."+activityName);
                 intent.setComponent(cn);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

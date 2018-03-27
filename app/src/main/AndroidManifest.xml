@@ -31,6 +31,7 @@
             android:label="@string/title_activity_main" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -43,9 +44,19 @@
             android:label="@string/title_activity_main_activity3" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".RequestActivity"
+            android:label="@string/title_activity_request" >
+        </activity>
+
+        <service
+            android:name=".service.EmermedicaServiceI"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>

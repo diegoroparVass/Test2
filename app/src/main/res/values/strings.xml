@@ -13,5 +13,6 @@
     <string name="btn2_2">Boton</string>
     <string name="title_activity_main_activity3">MainActivity3</string>
     <string name="btn4">Btn4</string>
+    <string name="title_activity_request">RequestActivity</string>
 
 </resources>

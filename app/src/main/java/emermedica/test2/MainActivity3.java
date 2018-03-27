@@ -2,6 +2,8 @@ package emermedica.test2;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.os.Build;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,15 +25,19 @@ public class MainActivity3 extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
 
         try {
+
             if (savedInstanceState == null) {
                 messageNotify("savedInstanceState is null!",null);
             }
-
-            //if (savedInstanceState != null) {
-                super.onCreate(savedInstanceState);
-            //}
-
+            super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main_activity3);
+
+            PackageInfo pinfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            String strInfo = "<packageName>"+pinfo.packageName+"</packageName>";
+            strInfo+= "<processName>"+pinfo.applicationInfo.processName+"</processName>";
+
+            TextView titlePage = (TextView) findViewById(R.id.txtTitle);
+            titlePage.setText(strInfo);
 
             TextView serverIp = (TextView) findViewById(R.id.act3txt1);
             TextView serverPort = (TextView) findViewById(R.id.act3txt2);

@@ -6,160 +6,183 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="emermedica.test2.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="username"
-        android:id="@+id/textView"
-        android:layout_alignParentTop="true"
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true">
+        <TableRow>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="VersionInfo"
+                android:id="@+id/textView5"
+                android:layout_column="0" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Medium Text"
+                android:id="@+id/txtInfoApp" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="username"
+                android:id="@+id/textView"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/userText"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/textView4"
+                android:layout_toEndOf="@+id/textView4" />
+        </TableRow>
+<TableRow>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Password"
         android:id="@+id/textView2"
-        android:layout_alignTop="@+id/userText"
-        android:layout_toRightOf="@+id/space"
-        android:layout_toEndOf="@+id/space" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/userText"
-        android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/button2"
-        android:layout_toStartOf="@+id/button2" />
+        android:layout_alignBaseline="@+id/userText"
+        android:layout_alignBottom="@+id/userText"
+        android:layout_alignRight="@+id/textView9"
+        android:layout_alignEnd="@+id/textView9" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/passwordText"
-        android:layout_alignTop="@+id/textView2"
+        android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/textView2"
         android:layout_toEndOf="@+id/textView2" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Boton"
-        android:id="@+id/button1"
-        android:layout_below="@+id/serverPortText"
-        android:layout_marginTop="37dp"
-        android:layout_toLeftOf="@+id/space2"
-        android:layout_toStartOf="@+id/space2" />
+</TableRow>
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="serverIp:"
+                android:id="@+id/textView3"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
 
-    <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/scrollView"
-        android:layout_below="@+id/button1"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="79dp"
-        android:layout_alignParentBottom="true" />
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/serverIpTxt"
+                android:selectAllOnFocus="true" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="serverPort:"
+                android:id="@+id/textView4"
+                android:layout_toRightOf="@+id/txtPackageRef"
+                android:layout_toEndOf="@+id/txtPackageRef" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/btn2"
-        android:id="@+id/button2"
-        android:layout_alignTop="@+id/button1"
-        android:layout_toLeftOf="@+id/textView2"
-        android:layout_toStartOf="@+id/textView2" />
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/serverPortText"
+                android:selectAllOnFocus="true"/>
+        </TableRow>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/messages"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Packagename:"
+                android:id="@+id/textView8"/>
 
-    <Space
-        android:layout_width="20px"
-        android:layout_height="20px"
-        android:layout_below="@+id/userText"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/space" />
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtPackageRef"
+                android:selectAllOnFocus="true" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="ActivityName:"
+                android:id="@+id/textView9" />
 
-    <Space
-        android:layout_width="20px"
-        android:layout_height="20px"
-        android:layout_below="@+id/userText"
-        android:layout_alignRight="@+id/userText"
-        android:layout_alignEnd="@+id/userText"
-        android:id="@+id/space2" />
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtActName"
+                android:selectAllOnFocus="true"
+                android:layout_alignTop="@+id/textView9"
+                android:layout_toRightOf="@+id/textView9"
+                android:layout_toEndOf="@+id/textView9" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Text"
+                android:id="@+id/messages"
+                android:layout_above="@+id/messagesServer" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="serverIp:"
-        android:id="@+id/textView3"
-        android:layout_alignTop="@+id/space2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Text"
+                android:id="@+id/messagesServer"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="73dp" />
+        </TableRow>
+        <TableRow>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Boton"
+                android:id="@+id/button1" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/serverIpTxt"
-        android:selectAllOnFocus="true"
-        android:layout_below="@+id/userText"
-        android:layout_toStartOf="@+id/space"
-        android:layout_toLeftOf="@+id/space" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/btn2"
+                android:id="@+id/button2" />
+        </TableRow>
+        <TableRow>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/btn3"
+                android:id="@+id/btn3"
+                android:layout_alignTop="@+id/btn4"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="serverPort:"
-        android:id="@+id/textView4"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignTop="@+id/serverPortText" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/btn4"
+                android:id="@+id/btn4" />
+        </TableRow>
+    </TableLayout>
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/serverPortText"
-        android:selectAllOnFocus="true"
-        android:layout_below="@+id/serverIpTxt"
-        android:layout_toRightOf="@+id/textView4"
-        android:layout_toEndOf="@+id/textView4"
-        android:layout_marginTop="22dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/messagesServer"
-        android:layout_alignTop="@+id/scrollView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="73dp" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/btn3"
-        android:id="@+id/btn3"
-        android:layout_above="@+id/scrollView"
-        android:layout_alignRight="@+id/passwordText"
-        android:layout_alignEnd="@+id/passwordText" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/btn4"
-        android:id="@+id/btn4"
-        android:layout_alignBottom="@+id/btn3"
-        android:layout_toRightOf="@+id/passwordText"
-        android:layout_toEndOf="@+id/passwordText" />
+
+
 
 </RelativeLayout>
